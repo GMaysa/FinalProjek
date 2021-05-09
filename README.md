@@ -76,11 +76,11 @@
 2. Update data 
     - cari nama
         - jika ada --> pilih
-            - hapus peminjman
+            - hapus peminjaman
             - update data baru
 3. Hapus keanggotaan --> delete
 4. Baca data keanggotaan
 
 ### Pengembalian Buku
 1. Buku dikembalikan 
-    - masukan nama pemiminjam --> system_keanggotaan(nama)
+    - masukan nama peminjam --> system_keanggotaan(nama)
