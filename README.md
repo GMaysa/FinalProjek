@@ -82,5 +82,5 @@
 4. Baca data keanggotaan
 
 ### Pengembalian Buku
-1. Buku dikembalika 
+1. Buku dikembalikan 
     - masukan nama pemiminjam --> system_keanggotaan(nama)
