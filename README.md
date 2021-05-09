@@ -8,15 +8,15 @@
 - Peminjaman Buku
 - Inventaris buku
 - System keanggotaan
-- Pengembalin Buku
+- Pengembalian Buku
 
 ## Function
 ### ***Main Menu***
 - Memuat tampilan menu mencakup 4 fungsi dibawah.
 ### ***Peminjaman Buku / Book Loan ***
-- Mencatat data  peminjaman mencakup data buku, identitas peminjam, tgl pinjam, tengat pengembalian.
+- Mencatat data  peminjaman mencakup data buku, identitas peminjam, tgl pinjam, tenggat pengembalian.
 ### ***Inventaris Buku / Inventory ***
-- Memeriksa ketersedian buku yang diminta peminjam.
+- Memeriksa ketersediaan buku yang diminta peminjam.
 - Mengupdate data buku masuk dan buku keluar/dipinjam.
 - Menyimpan data buku: Nama, Author, Kode, Stok, Tempat.
 ### ***System Keanggotaan***
