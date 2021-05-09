@@ -24,7 +24,7 @@
 - Menghapus keanggotaan
 - Memperbaharui data keanggotaan seperti alamat dan nomor tlp
 ### ***Pengembalian Buku***
-- Mencata data pengembalian buku sesuai tengat dan tidak.
+- Mencata data pengembalian buku sesuai tenggat dan tidak.
 
 ## Things Need
 - Peminjaman Buku (Array, Struct, File Operasi Write). Metode: create, update;
@@ -40,7 +40,7 @@
 
 ## Algoritma
 ### Peminjaman Buku / Book Loan
-1. Staff mendata identitas peminjam, tgl pinjam, tingit pengembasli.
+1. Staff mendata identitas peminjam, tgl pinjam, tenggat pengembalian.
 2. Staff mencari buku --> invetory(kode);
 
 ### Inventaris Buku / Inventory
