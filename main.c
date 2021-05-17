@@ -1,78 +1,116 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 struct data
 {
-    char book_title[200];
-    char identy[200];
-    char date_loan[200];
-    char date_back[200];
+    char title[200];
+    char author[200];
+    char code[200];
+    int stock;
 }loan[100];
 
-struct info
-{
-    char title[100];
-    char author[100];
-    int code;
-    int stock;
-}in[100];
-
-void book_loan()
-{
-    FILE *bl;//pointer untuk menyimpan data peminjaman
-    int i = 0;
-    bl = fopen("database_boak_loan.txt","w");
-    fprintf(bl,"\n-------------------------------------\nIdentitas Nama: ");
-    fgets(loan->identy,sizeof(loan->identy),stdin);
-    fputs(loan->identy,bl);
-    fprintf(bl,"Judul Buku: ");
-    fgets(loan->book_title, sizeof(loan->book_title), stdin);
-    fputs(loan->book_title, bl);
-    fprintf(bl,"Tanggal Peminjaman: ");
-    fgets(loan->date_loan, sizeof(loan->date_loan), stdin);
-    fputs(loan->date_loan, bl);
-    fprintf(bl,"Tengat Pengembalian: ");
-    fgets(loan->identy, sizeof(loan->identy), stdin);
-    fputs(loan->identy, bl);
-    fclose(bl);
-}
-
-void search_book()
-{
+void view(){
     int i = 0, j = 0, find;
-    char tit[100];
-    FILE *sb;//pointer untuk menyimpan data yang dibuka
-    FILE *sbc;
-    sb = fopen("database_boak.txt","r");
+    FILE *rd;
+    rd = fopen("database_boak.txt", "r");
     char ch;
-    while(ch != EOF)
+
+    if (rd == NULL)
     {
-        fscanf(sb,"\n%s\n%s\n%d\n%d", &in[i].title, &in[i].author,&in[i].code,&in[i].stock);
-        printf("\n%s\n%s\n%d\n%d", in[i].title, in[i].author, in[i].code, in[i].stock);
-        ch = fgetc(sb);
+        printf("File tidak ditemukan");
+        exit(0);
+    }
+    while (ch != EOF)
+    {
+        fscanf(rd, "%s %s %s %d", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock);
+        printf("%s %s %s %d\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock);
+        ch = fgetc(rd);
         i++;
     }
-    gets(tit);
-    fflush(stdin);
-    while(strcmp(tit,in[j].title)!=0)
-    {
-        j++;
-    }
-    find = j;
-    sbc = fopen("database_boak.txt", "a");
-    in[find].stock = in[j].stock - 1;
-    fprintf(sbc, in[find].stock);
-    fclose(sbc);
-    fclose(sb);
+    fclose(rd);
 }
 
-int main(){
-    //Peminjaman Buku
-    FILE *fp;
-    int n;
-    fp = fopen("database_boak_loan.txt", "a");
-    fprintf(fp,"Data Peminjaman",n);
-    fclose(fp);
-    book_loan();
-    search_book();
+void tester(){
+    int i = 0, find, size, get;
+    char code[50];
+    FILE *sc;
+    sc = fopen("database_boak.txt","r");
+    char ai;
+    if(sc ==NULL){
+        printf("File tidak ditemukan");
+        exit(0);
+    }
+    while(ai != EOF){
+        fscanf(sc, "%s %s %s %d", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock);
+        ai = fgetc(sc);
+        i++;
+    }
+    size = i;
+    gets(code);
+    fflush(stdin);
+    for(find = 0; find < size; find++){
+        if(strcmp(loan[find].code,code) == 0){
+            printf("%s %s %s %d", loan[find].title, loan[find].author, loan[find].code, loan[find].stock);
+        }
+    }
+    fclose(sc);
+}
+
+void update(){
+    int i = 0, size,find=0;
+    char title[100];
+    FILE *up;
+    up = fopen("database_boak.txt", "w");
+    char dp;
+    if (up == NULL)
+    {
+        printf("File tidak ditemukan");
+        exit(0);
+    }
+    while (dp != EOF)
+    {
+        fscanf(up, "%s %s %s %d", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock);
+        dp = fgetc(up);
+        i++;
+    }
+    size = i;
+    gets(title);
+    fflush(stdin);
+    for (find = 0; find < size; find++)
+    {
+        if (strcmp(loan[find].title, title) == 0){
+            printf("Stock sekarang: %d", loan[find].stock);
+            fprintf(up,"%d",loan[find].stock);
+        }
+    }
+    fclose(up);
+}
+int main()
+{
+    int chose,ul;
+    do{
+        scanf("%d", &chose);
+        switch(chose){
+            case 1:
+                view();
+                break;
+            
+            case 2:
+                tester();
+                break;
+
+            case 3:
+                update();
+                break;
+            
+            case 4:
+                exit(0);
+                break;
+            default:
+                printf("salah");
+        }
+        printf("Ulang? Ketik 1: ");scanf("%d", &ul);
+    }while(ul == 1);
+    return 0;
 }
