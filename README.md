@@ -8,15 +8,15 @@
 - Peminjaman Buku
 - Inventaris buku
 - System keanggotaan
-- Pengembalin Buku
+- Pengembalian Buku
 
 ## Function
 ### ***Main Menu***
 - Memuat tampilan menu mencakup 4 fungsi dibawah.
 ### ***Peminjaman Buku / Book Loan ***
-- Mencatat data  peminjaman mencakup data buku, identitas peminjam, tgl pinjam, tengat pengembalian.
+- Mencatat data  peminjaman mencakup data buku, identitas peminjam, tgl pinjam, tenggat pengembalian.
 ### ***Inventaris Buku / Inventory ***
-- Memeriksa ketersedian buku yang diminta peminjam.
+- Memeriksa ketersediaan buku yang diminta peminjam.
 - Mengupdate data buku masuk dan buku keluar/dipinjam.
 - Menyimpan data buku: Nama, Author, Kode, Stok, Tempat.
 ### ***System Keanggotaan***
@@ -24,7 +24,7 @@
 - Menghapus keanggotaan
 - Memperbaharui data keanggotaan seperti alamat dan nomor tlp
 ### ***Pengembalian Buku***
-- Mencata data pengembalian buku sesuai tengat dan tidak.
+- Mencata data pengembalian buku sesuai tenggat dan tidak.
 
 ## Things Need
 - Peminjaman Buku (Array, Struct, File Operasi Write). Metode: create, update;
@@ -40,7 +40,7 @@
 
 ## Algoritma
 ### Peminjaman Buku / Book Loan
-1. Staff mendata identitas peminjam, tgl pinjam, tingit pengembasli.
+1. Staff mendata identitas peminjam, tgl pinjam, tenggat pengembalian.
 2. Staff mencari buku --> invetory(kode);
 
 ### Inventaris Buku / Inventory
@@ -76,11 +76,11 @@
 2. Update data 
     - cari nama
         - jika ada --> pilih
-            - hapus peminjman
+            - hapus peminjaman
             - update data baru
 3. Hapus keanggotaan --> delete
 4. Baca data keanggotaan
 
 ### Pengembalian Buku
-1. Buku dikembalika 
-    - masukan nama pemiminjam --> system_keanggotaan(nama)
+1. Buku dikembalikan 
+    - masukan nama peminjam --> system_keanggotaan(nama)
