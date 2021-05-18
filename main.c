@@ -62,7 +62,8 @@ void update(){
     int i = 0, size,find=0;
     char title[100];
     FILE *up;
-    up = fopen("database.txt", "w");
+    FILE *io;
+    up = fopen("database.txt", "r");
     char dp;
     if (up == NULL)
     {
@@ -76,6 +77,7 @@ void update(){
         dp = fgetc(up);
         i++;
     }
+    io = fopen("database.txt","w");
     size = i;
     gets(title);
     fflush(stdin);
@@ -83,11 +85,14 @@ void update(){
     {
         if (strcmp(loan[find].title,title) == 0){
             printf("\nStock sekarang: %d", loan[find].stock);
-            scanf("%d",&loan[find].stock);
+            printf("\nUpdate stock: ");scanf("%d",&loan[find].stock);
         }
-        printf("%s %s %s %d\n", loan[find].title, loan[find].author, loan[find].code, loan[find].stock);
-        fprintf(up,"%s %s %s %d", loan[find].title,loan[find].author, loan[find].code, loan[find].stock);
     }
+    for (int j = 0; j < size; j++){
+        fprintf(io,"%s %s %s %d\n", loan[j].title,loan[j].author, loan[j].code, loan[j].stock);
+        printf("%s %s %s %d\n", loan[j].title, loan[j].author, loan[j].code, loan[j].stock);
+    }
+    fclose(io);
     fclose(up);
 }
 int main()
@@ -113,8 +118,8 @@ int main()
             }
         
         printf("\nUlang? Ketik 1: ");
-        gets(ul);
         fflush(stdin);
+        gets(ul);
     }while(strcmp("1",ul)==0);
     return 0;
 }
