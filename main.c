@@ -13,7 +13,7 @@ struct data
 void view(){
     int i = 0, j = 0, find;
     FILE *rd;
-    rd = fopen("database_boak.txt", "r");
+    rd = fopen("database.txt", "r");
     char ch;
 
     if (rd == NULL)
@@ -35,7 +35,7 @@ void tester(){
     int i = 0, find, size, get;
     char code[50];
     FILE *sc;
-    sc = fopen("database_boak.txt","r");
+    sc = fopen("database.txt","r");
     char ai;
     if(sc ==NULL){
         printf("File tidak ditemukan");
@@ -43,6 +43,7 @@ void tester(){
     }
     while(ai != EOF){
         fscanf(sc, "%s %s %s %d", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock);
+        printf("%s %s %s %d\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock);
         ai = fgetc(sc);
         i++;
     }
@@ -61,7 +62,7 @@ void update(){
     int i = 0, size,find=0;
     char title[100];
     FILE *up;
-    up = fopen("database_boak.txt", "w");
+    up = fopen("database.txt", "w");
     char dp;
     if (up == NULL)
     {
@@ -71,6 +72,7 @@ void update(){
     while (dp != EOF)
     {
         fscanf(up, "%s %s %s %d", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock);
+        printf("%s %s %s %d\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock);
         dp = fgetc(up);
         i++;
     }
@@ -79,38 +81,40 @@ void update(){
     fflush(stdin);
     for (find = 0; find < size; find++)
     {
-        if (strcmp(loan[find].title, title) == 0){
-            printf("Stock sekarang: %d", loan[find].stock);
-            fprintf(up,"%d",loan[find].stock);
+        if (strcmp(loan[find].title,title) == 0){
+            printf("\nStock sekarang: %d", loan[find].stock);
+            scanf("%d",&loan[find].stock);
         }
+        printf("%s %s %s %d\n", loan[find].title, loan[find].author, loan[find].code, loan[find].stock);
+        fprintf(up,"%s %s %s %d", loan[find].title,loan[find].author, loan[find].code, loan[find].stock);
     }
     fclose(up);
 }
 int main()
 {
-    int chose,ul;
+    char chose[2];
+    char ul[2];
     do{
-        scanf("%d", &chose);
-        switch(chose){
-            case 1:
+        gets(chose);
+        fflush(stdin);
+            if(strcmp("1",chose)==0){
                 view();
-                break;
-            
-            case 2:
+            }
+            else if (strcmp("2", chose) == 0)
+            {
                 tester();
-                break;
-
-            case 3:
+            }
+            else if (strcmp("3", chose) == 0)
+            {
                 update();
-                break;
-            
-            case 4:
-                exit(0);
-                break;
-            default:
+            }
+            else{
                 printf("salah");
-        }
-        printf("Ulang? Ketik 1: ");scanf("%d", &ul);
-    }while(ul == 1);
+            }
+        
+        printf("\nUlang? Ketik 1: ");
+        gets(ul);
+        fflush(stdin);
+    }while(strcmp("1",ul)==0);
     return 0;
 }
