@@ -10,8 +10,9 @@ struct data
     int stock;
 }loan[100];
 
-void panggil(FILE *rd){
+void view(){
     int i = 0, j = 0, find;
+    FILE *rd;
     rd = fopen("database.txt", "r");
     char ch;
 
@@ -26,14 +27,8 @@ void panggil(FILE *rd){
         printf("%s %s %s %d\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock);
         ch = fgetc(rd);
         i++;
+        fclose(rd);
     }
-}
-
-void view(){
-    FILE *rd;
-    panggil(rd);
-    
-    fclose(rd);
 }
 
 void tester(){
@@ -105,8 +100,8 @@ int main()
     char chose[2];
     char ul[2];
     do{
-        gets(chose);
         fflush(stdin);
+        gets(chose);
             if(strcmp("1",chose)==0){
                 view();
             }
