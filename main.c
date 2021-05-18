@@ -10,9 +10,8 @@ struct data
     int stock;
 }loan[100];
 
-void view(){
+void panggil(FILE *rd){
     int i = 0, j = 0, find;
-    FILE *rd;
     rd = fopen("database.txt", "r");
     char ch;
 
@@ -28,6 +27,12 @@ void view(){
         ch = fgetc(rd);
         i++;
     }
+}
+
+void view(){
+    FILE *rd;
+    panggil(rd);
+    
     fclose(rd);
 }
 
