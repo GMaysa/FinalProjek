@@ -9,7 +9,7 @@ struct data
     char code[200];
     int stock;
     char loc[200];
-} loan[100];
+} loan[500];
 
 void view()
 {
@@ -34,7 +34,7 @@ void view()
 
 void search()
 {
-    int i = 0, find = 0, size, get;
+    int i = 0, find, size, get;
     char title[200];
     FILE *sc;
     sc = fopen("DB/database.txt", "r");
@@ -54,33 +54,25 @@ void search()
     printf("Masukan judul buku: ");
     fflush(stdin);
     gets(title);
-    printf("%s", title);
-    while (strncmp(strlwr(loan[find].title), strlwr(title),find)){
-        printf("\nTitle: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s", loan[find].title, loan[find].author, loan[find].code, loan[find].stock, &loan[find].loc);
-        find++;
+    get = strlen(title);
+    for(find=0;find<size;find++)
+    {
+        if(strncmp(loan[find].title,title,get)==0){
+            printf("\nTitle: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s", loan[find].title, loan[find].author, loan[find].code, loan[find].stock, &loan[find].loc);
+        }
     }
     if (!find)
     {
         printf("\nBuku yang anda cari tidak ada atau judul yang anda tulis salah.");
     }
-    /*        for (find = 0; find < size; find++)
-        {
-            if (strcmp(loan[find].title, title) == 0)
-            {
-                printf("\nTitle: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s\n", loan[find].title, loan[find].author, loan[find].code, loan[find].stock, &loan[find].loc);
-            }
-            else
-            {
-                printf("Bukunay GAK ADA BOSQUE");
-            }
-        }*/
     fclose(sc);
 }
 
 void book_listing()
 {
-    int i = 0, find, size, get;
-    char title[50];
+    int i = 0, find, size, get, get2;
+    char title[200];
+    char author[200];
     FILE *sc;
     sc = fopen("DB/database.txt", "r");
     char ai;
@@ -91,26 +83,39 @@ void book_listing()
     }
     while (ai != EOF)
     {
-        fscanf(sc, "%s %s %s %d %s", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock);
-        printf("%s %s %s %d %s\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock);
+        fscanf(sc, "%200[^;]%*c %200[^;]%*c %200[^;]%*c %d %s", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock, &loan[i].loc);
         ai = fgetc(sc);
         i++;
     }
     size = i;
-    printf("Masukan judul buku (tanpa spasi):");
+    printf("Masukan judul buku: ");
     fflush(stdin);
     gets(title);
-    printf("Masukkan author buku(tanpa spasi:");
+    get = strlen(title);
     for (find = 0; find < size; find++)
     {
-        if (strcmp(strlwr(loan[find].title), strlwr(title)) == 0)
+        if (strncmp(loan[find].title, title, get) == 0)
         {
-            printf("%s %s %s %d %s", loan[find].title, loan[find].author, loan[find].code, loan[find].stock, loan[find].loc);
+            printf("\nTitle: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s", loan[find].title, loan[find].author, loan[find].code, loan[find].stock, &loan[find].loc);
         }
-        else
+    }
+    if(!find)
+    {
+        printf("Bukunya gak ada. Coba cari dengan nama author");
+    }
+    printf("Masukkan author buku: ");
+    fflush(stdin);
+    gets(author);
+    get2 = strlen(author);
+    for (find = 0; find < size; find++)
+    {
+        if (strncmp(loan[find].title, title, get) == 0 && strncmp(loan[find].author, author, get2)==0)
         {
-            printf("Bukunay GAK ADA BOSQUE");
+            printf("\nTitle: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s", loan[find].title, loan[find].author, loan[find].code, loan[find].stock, &loan[find].loc);
         }
+    }
+    if(!find){
+        printf("Bukunya literaly gak ada");
     }
     fclose(sc);
 }
@@ -130,13 +135,12 @@ void update()
     }
     while (dp != EOF)
     {
-        fscanf(up, "%s %s %s %d", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock, loan[i].loc);
-        printf("%s %s %s %d\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock, loan[i].loc);
+        fscanf(up, "%200[^;]%*c %200[^;]%*c %200[^;]%*c %d %s", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock, &loan[i].loc);
         dp = fgetc(up);
         i++;
     }
-    io = fopen("DB/database.txt", "w");
     size = i;
+    io = fopen("DB/database.txt", "w");
     gets(title);
     fflush(stdin);
     for (find = 0; find < size; find++)
@@ -203,18 +207,24 @@ int main()
             }
             else if (strcmp("2", chose) == 0)
             {
-                search();
+                puts("Pendataan Buku");
+                //jika ada
+                book_listing();
+                //jika tidak create
             }
             else if (strcmp("3", chose) == 0)
             {
-                update();
+                puts("Mencari Buku");
+                search();
             }
             else if (strcmp("4", chose) == 0)
             {
-                update();
+                puts("Data Pinjam/Kembali");
+                //belum ada tapi pakai kode tanggal maybe.
             }
             else if (strcmp("5", chose) == 0)
             {
+                //database real belum.
                 update();
             }
             else
