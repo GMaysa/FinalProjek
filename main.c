@@ -15,7 +15,7 @@ void view()
 {
     int i = 0, j = 0, find;
     FILE *rd;
-    rd = fopen("database.txt", "r");
+    rd = fopen("DB/database.txt", "r");
     char ch;
     if (rd == NULL)
     {
@@ -25,7 +25,7 @@ void view()
     while (ch != EOF)
     {
         fscanf(rd, "%200[^;]%*c %200[^;]%*c %200[^;]%*c %d %s", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock, &loan[i].loc);
-        printf("[%d]\nTitle: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s\n", i+1, loan[i].title, loan[i].author, loan[i].code, loan[i].stock, &loan[i].loc);
+        printf("[%d]\nTitle: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s\n", i + 1, loan[i].title, loan[i].author, loan[i].code, loan[i].stock, &loan[i].loc);
         ch = fgetc(rd);
         i++;
     }
@@ -34,10 +34,10 @@ void view()
 
 void search()
 {
-    int i = 0, find=0, size, get;
+    int i = 0, find = 0, size, get;
     char title[200];
     FILE *sc;
-    sc = fopen("database.txt", "r");
+    sc = fopen("DB/database.txt", "r");
     char ai;
     if (sc == NULL)
     {
@@ -59,10 +59,11 @@ void search()
         printf("\nTitle: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s", loan[find].title, loan[find].author, loan[find].code, loan[find].stock, &loan[find].loc);
         find++;
     }
-    if (!find){
+    if (!find)
+    {
         printf("\nBuku yang anda cari tidak ada atau judul yang anda tulis salah.");
     }
-/*        for (find = 0; find < size; find++)
+    /*        for (find = 0; find < size; find++)
         {
             if (strcmp(loan[find].title, title) == 0)
             {
@@ -81,7 +82,7 @@ void book_listing()
     int i = 0, find, size, get;
     char title[50];
     FILE *sc;
-    sc = fopen("database.txt", "r");
+    sc = fopen("DB/database.txt", "r");
     char ai;
     if (sc == NULL)
     {
@@ -120,7 +121,7 @@ void update()
     char title[100];
     FILE *up;
     FILE *io;
-    up = fopen("database.txt", "r");
+    up = fopen("DB/database.txt", "r");
     char dp;
     if (up == NULL)
     {
@@ -134,7 +135,7 @@ void update()
         dp = fgetc(up);
         i++;
     }
-    io = fopen("database.txt", "w");
+    io = fopen("DB/database.txt", "w");
     size = i;
     gets(title);
     fflush(stdin);
@@ -163,68 +164,74 @@ int main()
     int menu;
     printf("Menu:");
     puts("1. Data Buku");
-    printf("Pilih menu: "); scanf("%d", &menu);
-    switch(menu){
-        case 1:
-            do
+    printf("Pilih menu: ");
+    scanf("%d", &menu);
+    switch (menu)
+    {
+    case 1:
+        do
+        {
+            puts("Data Buku");
+            puts("1.Iventaris");
+            puts("2.Mobilitas Buku");
+            puts("3.Mencari Buku");
+            puts("4.Pembukuan Pinjam/Kembali");
+            puts("5.Data Real");
+            fflush(stdin);
+            gets(chose);
+            if (strcmp("1", chose) == 0)
             {
-                puts("Data Buku");
-                puts("1.Iventaris");
-                puts("2.Mobilitas Buku");
-                puts("3.Mencari Buku");
-                puts("4.Pembukuan Pinjam/Kembali");
-                puts("5.Data Real");
-                fflush(stdin);
-                gets(chose);
-                if (strcmp("1", chose) == 0)
+                int inv;
+                puts("inventaris Buku");
+                puts("1. Semua informasi");
+                puts("2. Informasi Spesifik");
+                puts("Anda ingin melihat yang mana? (ketik nomor untuk memilih)");
+                printf("Pilihan: ");
+                scanf("%d", &inv);
+                if (inv == 1)
                 {
-                    int inv;
-                    puts("inventaris Buku");
-                    puts("1. Semua informasi");
-                    puts("2. Informasi Spesifik");
-                    puts("Anda ingin melihat yang mana? (ketik nomor untuk memilih)");
-                    printf("Pilihan: "); scanf("%d",&inv);
-                    if(inv == 1){
-                        view();
-                    }
-                    else if (inv == 2){
-                        search();
-                    }
-                    else{
-                        puts("Pilihan tidak tersedia");
-                    }
+                    view();
                 }
-                else if (strcmp("2", chose) == 0)
+                else if (inv == 2)
                 {
                     search();
                 }
-                else if (strcmp("3", chose) == 0)
-                {
-                    update();
-                }
-                else if (strcmp("4", chose) == 0)
-                {
-                    update();
-                }
-                else if (strcmp("5", chose) == 0)
-                {
-                    update();
-                }
                 else
                 {
-                    printf("Pilihan tidak tersedia goblok");
+                    puts("Pilihan tidak tersedia");
                 }
+            }
+            else if (strcmp("2", chose) == 0)
+            {
+                search();
+            }
+            else if (strcmp("3", chose) == 0)
+            {
+                update();
+            }
+            else if (strcmp("4", chose) == 0)
+            {
+                update();
+            }
+            else if (strcmp("5", chose) == 0)
+            {
+                update();
+            }
+            else
+            {
+                printf("Pilihan tidak tersedia goblok");
+            }
 
-                printf("\nUlang? Ketik 1: ");
-                fflush(stdin);
-                gets(ul);
-            } while (strcmp("1", ul) == 0);            
-            break;
-        case 2:
-            puts("BELOM ADA BANKS");
-            break;
-        default:
-            printf("Menu tidak tersedia tolong lah ya...FUCEK");
+            printf("\nUlang? Ketik 1: ");
+            fflush(stdin);
+            gets(ul);
+        } while (strcmp("1", ul) == 0);
+        break;
+    case 2:
+        puts("BELOM ADA BANKS");
+        break;
+    default:
+        printf("Menu tidak tersedia tolong lah ya...FUCEK");
     }
     return 0;
 }

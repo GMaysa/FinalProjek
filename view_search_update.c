@@ -15,7 +15,7 @@ void view()
 {
     int i = 0, j = 0, find;
     FILE *rd;
-    rd = fopen("database.txt", "r");
+    rd = fopen("DB/database.txt", "r");
     char ch;
     if (rd == NULL)
     {
@@ -37,7 +37,7 @@ void search()
     int i = 0, find, size, get;
     char title[50];
     FILE *sc;
-    sc = fopen("database.txt", "r");
+    sc = fopen("DB/database.txt", "r");
     char ai;
     if (sc == NULL)
     {
@@ -73,7 +73,7 @@ void update()
     char title[100];
     FILE *up;
     FILE *io;
-    up = fopen("database.txt", "r");
+    up = fopen("DB/database.txt", "r");
     char dp;
     if (up == NULL)
     {
@@ -87,7 +87,7 @@ void update()
         dp = fgetc(up);
         i++;
     }
-    io = fopen("database.txt", "w");
+    io = fopen("DB/database.txt", "w");
     size = i;
     gets(title);
     fflush(stdin);
