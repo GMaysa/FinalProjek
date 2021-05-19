@@ -24,8 +24,8 @@ void view()
     }
     while (ch != EOF)
     {
-        fscanf(rd, "%s %s %s %d %S", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock);
-        printf("%s %s %s %d %s\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock);
+        fscanf(rd, "%200[^;]%*c %200[^;]%*c %200[^;]%*c %d %s", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock, &loan[i].loc);
+        printf("Title: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock, &loan[i].loc);
         ch = fgetc(rd);
         i++;
     }
@@ -35,7 +35,7 @@ void view()
 void search()
 {
     int i = 0, find, size, get;
-    char code[50];
+    char title[50];
     FILE *sc;
     sc = fopen("DB/database.txt", "r");
     char ai;
@@ -51,13 +51,13 @@ void search()
         i++;
     }
     size = i;
-    gets(code);
+    gets(title);
     fflush(stdin);
     for (find = 0; find < size; find++)
     {
-        if (strcmp(loan[find].code, code) == 0)
+        if (strcmp(strlwr(loan[find].title), strlwr(title)) == 0)
         {
-            printf("%s %s %s %d", loan[find].title, loan[find].author, loan[find].code, loan[find].stock);
+            printf("Title: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock, &loan[i].loc);
         }
         else
         {

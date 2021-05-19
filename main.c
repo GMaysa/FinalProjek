@@ -55,8 +55,7 @@ void search()
     fflush(stdin);
     gets(title);
     printf("%s", title);
-    while (strncmp(strlwr(loan[find].title), strlwr(title), find))
-    {
+    while (strncmp(strlwr(loan[find].title), strlwr(title),find)){
         printf("\nTitle: %s\nAuthor: %s\nCode: %s\nStock: %d\nLocation: %s", loan[find].title, loan[find].author, loan[find].code, loan[find].stock, &loan[find].loc);
         find++;
     }
