@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 struct member{
@@ -24,12 +25,11 @@ int insert(){
     fflush(stdin);
     gets(mem[i].Alamat); 
 
-    fprintf(ptr,"%s; %s; %s; ", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
+    fprintf(ptr," %s; %s; %s;", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
 
     fclose(ptr);
     system("cls");
     puts("BERHASIL...");
-    system("pause");
     return 0;
 }
 int update(){}
@@ -39,21 +39,61 @@ int display(){
     char ch;
     ptr = fopen("DB/dbMember.txt","r");
 
+    if (ptr == NULL)
+    {
+        printf("File tidak ditemukan");
+        exit(0);
+    }
     int i = 0;
     while(ch != EOF){
-        fscanf(ptr, "%200[^;]%*c %200[^;]%*c %200[^;]%*c", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
-        // printf("Nama: %s\nNo Telp: %s\nAlamat: %s\n\n", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
-        ch = fgetc(ptr);
+        printf("%d\n", i);
+        fscanf(ptr, "%[^;]%*c %200[^;]%*c %200[^;]%*c", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
+        printf("Nama: %s\nNo Telp: %s\nAlamat: %s\n\n", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
         i++;
+        ch = fgetc(ptr);
     }
-    for(int j = 0; j < i; j++){
-        printf("Nama: %s\nNo Telp: %s\nAlamat: %s\n\n", mem[j].nama, mem[j].noTelp, mem[j].Alamat);
-    }
-
+    // for(int j = 0; j < i; j++){
+    //     if(j == 0);
+    // }
     fclose(ptr);
 }
 
-int delete(){}
+void delete(){
+    FILE *ptr, *w;
+    char ch, nama[100];
+    ptr = fopen("DB/dbMember.txt", "r");
+
+    int i = 0;
+    while (ch != EOF)
+    {
+        fscanf(ptr, "%200[^;]%*c %200[^;]%*c %200[^;]%*c", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
+        ch = fgetc(ptr);
+        i++;
+    }
+    printf("Masukkan nama member: ");
+    fflush(stdin);
+    gets(nama);
+    for (int j = 0; j < i; j++)
+    {
+        if(strcmp(mem[j].nama, nama) == 0){
+            for(int k = j; k < i; k++){
+                mem[j] = mem[j+1];
+            }
+            system("cls");
+            puts("BERHASIL...");
+            system("pause");
+        }
+        system("cls");
+    }
+    i -= 1;
+    w = fopen("DB/dbMember.txt", "w");
+    for (int j = 0; j < i; j++){
+        fprintf(w, " %s; %s; %s;", mem[j].nama, mem[j].noTelp, mem[j].Alamat);
+        printf("Nama: %s\nNo Telp: %s\nAlamat: %s\n\n", mem[j].nama, mem[j].noTelp, mem[j].Alamat);
+    }
+    fclose(w);
+    fclose(ptr);
+}
 
 int main(){
     int ch;
@@ -74,18 +114,22 @@ int main(){
             case 1:
                 system("cls");
                 insert();
+                system("pause");
             break;
             case 2:
                 system("cls");
                 update();
+                system("pause");
             break;
             case 3:
                 system("cls");
                 display();
+                system("pause");
             break;
             case 4:
                 system("cls");
                 delete();
+                system("pause");
             break;
         
             default:
