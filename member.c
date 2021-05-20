@@ -63,7 +63,7 @@ void delete(){
     char ch, nama[100];
     ptr = fopen("DB/dbMember.txt", "r");
 
-    int i = 0;
+    int i = 0, target;
     while (ch != EOF)
     {
         fscanf(ptr, "%200[^;]%*c %200[^;]%*c %200[^;]%*c", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
@@ -76,15 +76,16 @@ void delete(){
     for (int j = 0; j < i; j++)
     {
         if(strcmp(mem[j].nama, nama) == 0){
-            for(int k = j; k < i; k++){
-                mem[j] = mem[j+1];
-            }
-            system("cls");
-            puts("BERHASIL...");
-            system("pause");
+            target = j;
         }
         system("cls");
     }
+    for (int k = target; k < i; k++){
+        mem[k] = mem[k + 1];
+    }
+    system("cls");
+    puts("BERHASIL...");
+    system("pause");
     i -= 1;
     w = fopen("DB/dbMember.txt", "w");
     for (int j = 0; j < i; j++){
