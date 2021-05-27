@@ -1,7 +1,1 @@
-Persona; Azura; 100; 10 RAK1
-Persona; Iwan; 123; 11 RAK192
-Perpus; Awek; 122; 134 RAK67
-Aku Peru; Iman; 999; 123 RAK76
-Pemrograman Dasar C; Albertus; 78; 31 RAK2
-Pemrograman Dasar C; Ivan Gunawan; 91; 10 RAK5
-Hakunamatata; Aida; 141; 99 RAK3
+Persona;Azura; 100; 11 RAK1;erpus;Awek; 122; 134 RAK67;ku Peru;Iman; 999; 123 RAK76;emrograman Dasar C;Albertus; 78; 29 RAK2;emrograman Dasar C;Ivan Gunawan; 91; 10 RAK5;akunamatata;Aida; 141; 99 RAK3;uka Hati;Iwse; 193; 1 RAK.C.13;
