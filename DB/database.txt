@@ -1,0 +1,6 @@
+Persona; Azura; 100; 10 RAK1
+Persona; Iwan; 123; 11 RAK192
+Perpus; Awek; 122; 134 RAK67
+Pemrograman Dasar C; Albertus; 78; 31 RAK2
+Pemrograman Dasar C; Ivan Gunawan; 91; 10 RAK5
+Hakunamatata; Aida; 141; 99 RAK3
