@@ -1,1 +1,0 @@
-Persona;Azura; 100; 10 RAK1;rpus;Awek; 122; 134 RAK67;u Peru;Iman; 999; 123 RAK76;mrograman Dasar C;Albertus; 78; 29 RAK2;mrograman Dasar C;Ivan Gunawan; 91; 10 RAK5;kunamatata;Aida; 141; 99 RAK3;ka Hati;Iwse; 193; 1 RAK.C.13;
