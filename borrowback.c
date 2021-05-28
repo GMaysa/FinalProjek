@@ -39,7 +39,6 @@ char* borrow(char *comp)
     FILE *br2;
     int i = 0, r = 0, k, temp, size;
     char ch, dh;
-    puts(t);
     br = fopen("DB/dbLoan.txt", "r");
     if (br == NULL)
     {
@@ -112,6 +111,7 @@ void minusstck(char*str){
     fclose(db);
 
 }
+
 int display()
 {
     FILE *ptr;
@@ -134,10 +134,11 @@ int display()
     }
     fclose(ptr);
 }
-int getBorrow(){
-    int save,i = 0;
+int getBack(){
+    int save,i = 0,pilih;
     FILE *ptr;
     char ch;
+    char nama[50];
     ptr = fopen("DB/dbLoan.txt","r");
 
     printf("Data Pinjaman");
@@ -151,87 +152,88 @@ int getBorrow(){
         fscanf(ptr, "%200[^;]%*c %200[^;]%*c %200[^;]%*c %200[^;]%*c", row[i].title, row[i].code, row[i].id_borrow, row[i].date);
         printf("[%d]\n", i + 1);
         printf("Peminjam:%s\nJudul Buku:%s\nCode:%s\nTanggal Pinjam:%s\n",row[i].id_borrow,row[i].title,row[i].code,row[i].date);
-        strcpy(back[i].id_borrow,row[i].id_borrow);
-        strcpy(back[i].title,row[i].title);
-        strcpy()
         ch = getc(ptr);
         i++;
     }
-    printf("Pilih Peminjam:");scanf("%d",&save);
-    fclose(ptr);
-    return save;
-}
-long int findSize(char file_name[])
-{
-    // opening the file in read mode
-    FILE *fp = fopen(file_name, "r");
-
-    // checking if the file exist or not
-    if (fp == NULL)
-    {
-        printf("File Not Found!\n");
-        return -1;
+    printf("1.Pilih Data Pengembalian");
+    printf("2. Cari data lagi");
+    scanf("%d",&pilih);
+    if (pilih == 1){
+        for (int j = 0; j<i;j++){
+            printf("Peminjam:%s\nJudul Buku:%s\nCode:%s\nTanggal Pinjam:%s\n", row[j].id_borrow, row[j].title, row[j].code, row[j].date);
+        }
+        printf("Pilih Data Masukan Nomor: ");scanf("%d",&pilih);
+        dataBack(row[pilih].id_borrow,row[pilih].title,row[i].code,row[i].date);
+        delete(pilih);
     }
+    else if(pilih ==2 ){
+        printf("Masukan Nama:");
+        fflush(stdin);
+        gets(nama);
+        pilih = searchBorrow(nama);
+        dataBack(row[pilih].id_borrow, row[pilih].title, row[i].code, row[i].date);
+        delete(pilih);
+    }
+    else{
+        printf("Pilihan tak tersedia");
+    }
+    return 0;
+}
+int searchBorrow(char*nama){
+    printf("zonk");
+    return 5;
+}
+void delete(int target){
+    FILE *w;
+    int i;
 
-    fseek(fp, 0L, SEEK_END);
-
-    // calculating the size of the file
-    long int res = ftell(fp);
-
-    // closing the file
-    fclose(fp);
-
-    return res;
+    for (int k = target; k < i; k++)
+    {
+        row[k] = row[k + 1];
+    }
+    system("cls");
+    puts("BERHASIL...");
+    system("pause");
+    i -= 1;
+    w = fopen("DB/dbLoan.txt", "w");
+    for (int j = 0; j < i; j++)
+    {
+        fprintf(w, " %s; %s; %s; %s;", row[j].title,row[j].code,row[j].id_borrow,row[j].date);
+    }
+    fclose(w);
 }
 
-int dataBack(int to){
+char* getTime(){
+    struct tm *info;
+    time_t rawtime;
+    time(&rawtime);
+    info = localtime(&rawtime);
+    return asctime(info);
+}
+
+void dataBack(char*user,char*title,char*code,char*date){
     int save, i = 0,j = 0,k=0;
     FILE *ptr;
-    FILE *ptr2;
-    FILE *w;
     char ch;
-    ptr = fopen("DB/dbLoan.txt", "r");
+    ptr = fopen("DB/dbBack.txt", "a");
 
-    printf("Data Pinjaman");
+    printf("Data Pengembalian");
     if (ptr == NULL)
     {
         printf("File tidak ditemukan");
         exit(0);
     }
-    while (ch != EOF)
-    {
-        fscanf(ptr, "%200[^;]%*c %200[^;]%*c %200[^;]%*c %200[^;]%*c", row[i].title, row[i].code, row[i].id_borrow, row[i].date);
-        printf("[%d]\n", i + 1);
-        printf("Peminjam:%s\nJudul Buku:%s\nCode:%s\nTanggal Pinjam:%s\n", row[i].id_borrow, row[i].title, row[i].code, row[i].date);
-        ch = getc(ptr);
-        i++;
-    }
-    ptr2 = fopen("DB/dbLoan.txt", "r");
-
-    printf("Data Kembali");
-    if (ptr2 == NULL)
-    {
-        printf("File tidak ditemukan");
-        exit(0);
-    }
-    while (ch != EOF)
-    {
-        fscanf(ptr2, "%200[^;]%*c%200[^;]%*c%200[^;]%*c%200[^;]%*c%200[^;]%*c", back[j].title, back[j].code, back[j].id_borrow, back[j].dateloan,back[j].dateback);
-        printf("[%d]\n", i + 1);
-        printf("Peminjam:%s\nJudul Buku:%s\nCode:%s\nTanggal Pinjam:%s\n", back[j].id_borrow, back[j].title, back[j].code, back[j].dateloan,back[j].dateback);
-        ch = getc(ptr2);
-        j++;
-    }
-    fclose(ptr2);
+    fprintf(ptr,"%s;%s;%s;%s;%s;",user,title,code,date,getTime());
     fclose(ptr);
-
 }
+
 int main(int argc, char* argv)
 {
     char s[50];
-    borrow(s);
-    printf("%s",s);
-    minusstck(s);
+ //   borrow(s);
+   // printf("%s",s);
+    //minusstck(s);
+    getBack();
 
 
     return 0;

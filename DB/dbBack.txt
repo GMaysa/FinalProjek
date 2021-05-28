@@ -1,1 +1,2 @@
-Persona;100;Masya;Sun May 23 12:05:06 2021;0;
+Jumat;ersona;;;Fri May 28 13:11:38 2021
+;
