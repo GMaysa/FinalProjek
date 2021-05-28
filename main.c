@@ -10,9 +10,9 @@ struct data
     int stock;
 }loan[100];
 
-void panggil(FILE *rd){
-    int i = 0, j = 0, find;
-    rd = fopen("database.txt", "r");
+int k;
+
+void call(FILE *rd){
     char ch;
 
     if (rd == NULL)
@@ -20,39 +20,36 @@ void panggil(FILE *rd){
         printf("File tidak ditemukan");
         exit(0);
     }
+    k = 0;
     while (ch != EOF)
     {
-        fscanf(rd, "%s %s %s %d", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock);
-        printf("%s %s %s %d\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock);
+        if(loan[k].title == "")break;
+        k++;
+        fscanf(rd, "%s %s %s %d", &loan[k].title, &loan[k].author, &loan[k].code, &loan[k].stock);
+        printf("%s %s %s %d\n", loan[k].title, loan[k].author, loan[k].code, loan[k].stock);
         ch = fgetc(rd);
-        i++;
     }
 }
 
 void view(){
+    int j = 0, find;
     FILE *rd;
-    panggil(rd);
-    
+    rd = fopen("database.txt", "r");
+
+    call(rd);
+
     fclose(rd);
 }
 
 void tester(){
-    int i = 0, find, size, get;
+    int find, size, get;
     char code[50];
     FILE *sc;
     sc = fopen("database.txt","r");
-    char ai;
-    if(sc ==NULL){
-        printf("File tidak ditemukan");
-        exit(0);
-    }
-    while(ai != EOF){
-        fscanf(sc, "%s %s %s %d", &loan[i].title, &loan[i].author, &loan[i].code, &loan[i].stock);
-        printf("%s %s %s %d\n", loan[i].title, loan[i].author, loan[i].code, loan[i].stock);
-        ai = fgetc(sc);
-        i++;
-    }
-    size = i;
+    
+    call(sc);
+
+    size = k;
     gets(code);
     fflush(stdin);
     for(find = 0; find < size; find++){
@@ -64,7 +61,7 @@ void tester(){
 }
 
 void update(){
-    int i = 0, size,find=0;
+    int i = 0, size, find = 0;
     char title[100];
     FILE *up;
     FILE *io;
@@ -82,19 +79,22 @@ void update(){
         dp = fgetc(up);
         i++;
     }
-    io = fopen("database.txt","w");
+    io = fopen("database.txt", "w");
     size = i;
     gets(title);
     fflush(stdin);
     for (find = 0; find < size; find++)
     {
-        if (strcmp(loan[find].title,title) == 0){
+        if (strcmp(loan[find].title, title) == 0)
+        {
             printf("\nStock sekarang: %d", loan[find].stock);
-            printf("\nUpdate stock: ");scanf("%d",&loan[find].stock);
+            printf("\nUpdate stock: ");
+            scanf("%d", &loan[find].stock);
         }
     }
-    for (int j = 0; j < size; j++){
-        fprintf(io,"%s %s %s %d\n", loan[j].title,loan[j].author, loan[j].code, loan[j].stock);
+    for (int j = 0; j < size; j++)
+    {
+        fprintf(io, "%s %s %s %d\n", loan[j].title, loan[j].author, loan[j].code, loan[j].stock);
         printf("%s %s %s %d\n", loan[j].title, loan[j].author, loan[j].code, loan[j].stock);
     }
     fclose(io);
@@ -123,8 +123,8 @@ int main()
             }
         
         printf("\nUlang? Ketik 1: ");
-        fflush(stdin);
         gets(ul);
+        fflush(stdin);
     }while(strcmp("1",ul)==0);
     return 0;
 }
