@@ -26,6 +26,7 @@ struct borrowback
     char id_borrow[100];
     char date[100];
 } row[500];
+
 char fileInv[] = "DB/dataBook.txt";
 char fileMem[] = "DB/dbMember.txt";
 char fileLoan[] = "DB/dbLoan.txt";
@@ -246,6 +247,27 @@ void updateBook(int next,int stock){
     }
     fclose(ub);
 }
+void delBook(int target)
+{
+    int loop = getAll(), i;
+    system("cls");
+    FILE *db;
+    for (i = target; i < loop; i++)
+    {
+        loan[i] = loan[i + 1];
+    }
+    i -= 1;
+    db = fopen(fileInv, "w");
+    for (int j = 0; j < i; j++)
+    {
+        if (j > 0)
+        {
+            fprintf(db, "\n");
+        }
+        fprintf(db, "%s;\n%s;\n%s;\n%d\n%s;", loan[j].title,loan[j].author,loan[j].isbn,loan[j].stock,loan[j].loc);
+    }
+    fclose(dm);
+}
 //Member System
 void createMem(char*name,char*phone,char*address){
     FILE *cm;
@@ -321,7 +343,6 @@ void updateMem(int next,char*info,int kind){
     int loop = getallMem();
     system("cls");
     FILE *um;
-    char ch;
     um = fopen(fileMem, "w");
     if (um == NULL)
     {
@@ -347,6 +368,10 @@ void updateMem(int next,char*info,int kind){
         {
             if (i == next - 1)
             {
+                if (i > 0)
+                {
+                    fprintf(um, "\n");
+                }
                 fprintf(um, "%s;\n%s;\n%s;", mem[i].nama, info, mem[i].Alamat);
             }
             else if (i != next -1)
@@ -360,6 +385,10 @@ void updateMem(int next,char*info,int kind){
         {
             if (i == next - 1)
             {
+                if (i > 0)
+                {
+                    fprintf(um, "\n");
+                }
                 fprintf(um, "%s;\n%s;\n%s;", mem[i].nama, mem[i].noTelp, info);
             }
             if( i!= next -1)
@@ -372,6 +401,24 @@ void updateMem(int next,char*info,int kind){
         printf("Pilihan tidak tersedia");        
     }
     fclose(um);
+}
+void delMem(int target){
+    int loop = getallMem(),i;
+    system("cls");
+    FILE *dm;
+    for(i = target; i<loop;i++){
+        mem[i] = mem[i+1];
+    }
+    i-=1;
+    dm = fopen(fileMem,"w");
+    for(int j = 0; j<i;j++){
+        if (j > 0)
+        {
+            fprintf(dm, "\n");
+        }
+        fprintf(dm,"%s;\n%s;\n%s;",mem[j].nama,mem[j].noTelp,mem[j].Alamat);
+    }
+    fclose(dm);
 }
 int main()
 {
@@ -396,33 +443,28 @@ int main()
             puts("3.Pembukuan Pinjam/Kembali");
             fflush(stdin);
             gets(chose);
-            if (strcmp("1", chose) == 0)
-            {
+            if (strcmp("1", chose) == 0){
                 puts("Inventaris Buku");
                 puts("1. Semua informasi");
                 puts("2. Informasi Spesifik");
                 puts("Anda ingin melihat yang mana? (ketik nomor untuk memilih)");
                 printf("Pilihan: ");
                 scanf("%d", &sub);
-                if (sub == 1)
-                {
+                if (sub == 1){
                     getAll();
                 }
-                else if (sub == 2)
-                {
+                else if (sub == 2){
                     printf("Masukan Informasi:");
                     fflush(stdin);
                     gets(info);
                     printf("Jenis Informasi\n1.Judul\n2.Author\n3.ISBN\n");scanf("%d",&pilih);
                     getSpec(info,pilih);
                 }
-                else
-                {
+                else{
                     puts("Pilihan tidak tersedia");
                 }
             }
-            else if (strcmp("2", chose) == 0)
-            {
+            else if (strcmp("2", chose) == 0){
                 puts("Pendataan Buku");
                 printf("1.Buku Masuk\n2.Hapus Data\n");scanf("%d",&sub);
                 if(sub == 1){
@@ -430,7 +472,6 @@ int main()
                     fflush(stdin);
                     gets(info);
                     int next = getBook(info);
-                    printf ("%d",next);
                     if(next == 0){
                         printf("Buku tida terseida");
                         printf("Masukan Judul: ");
@@ -459,8 +500,18 @@ int main()
 
                 }
                 else if(sub == 2){
-
-                }
+                    printf("Masukan Judul Buku: ");
+                    fflush(stdin);
+                    gets(info);
+                    int next = getBook(info);
+                    if (next == 0)
+                    {
+                        puts("Buku tidak tersedia");
+                    }
+                    if (next != 0){
+                        target
+                        delBook()
+                    }
                 else{
                     printf("Pilihan tidak tersedia");
                 }
@@ -538,11 +589,21 @@ int main()
                 getallMem();
                 system("pause");
             }
-            else if (ch == 2)
+            else if (ch == 4)
             {
                 system("cls");
-            //    delMem ();
-            // belom
+                printf("Masukan Nama Depan");
+                fflush(stdin);
+                gets(info);
+                int next = getMember(info);
+                if(next == 0){
+                    puts("Anggota tidak ditemukan");
+                }
+                if (next!=0){
+                    printf("Input nomor anggota yang ingin kamu hapus!");
+                    printf("Input: ");scanf("%d",&pilih);
+                    delMem(pilih);
+                }
                 system("pause");
             }
             else

@@ -1,6 +1,6 @@
 Singkawang;
 09863;
 Jl.Esek;
-Huwa;
+Huwa
 764314;
 Jl.Tukad;
