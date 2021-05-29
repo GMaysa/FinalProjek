@@ -21,10 +21,11 @@ struct member
 
 struct borrowback
 {
-    char code[100];
-    char title[100];
-    char id_borrow[100];
-    char date[100];
+    char title[500];
+    char isbn[500];
+    char name[500];
+    char loanTime[500];
+    char backTime[500];
 } row[500];
 
 char fileInv[] = "DB/dataBook.txt";
@@ -75,6 +76,11 @@ int getAll()
         printf("File tidak ditemukan");
         exit(1);
     }
+    long size = getLong(fileInv);
+    if(size == 0){
+        printf("File kosong");
+        exit(1);
+    }
     while (ch != EOF)
     {
         fscanf(rd, " %200[^;]%*c %200[^;]%*c %200[^;]%*c %d %200[^;]%*c", &loan[i].title, &loan[i].author, &loan[i].isbn, &loan[i].stock, &loan[i].loc);
@@ -86,7 +92,6 @@ int getAll()
     return loop;
     fclose(rd);
 }
-
 int getSpec(char*find, int kind){
     int loop = getAll();
     int size = strlen(find);
@@ -141,7 +146,6 @@ int getSpec(char*find, int kind){
     }
 
 }
-
 /*char *getMore(char *more, int kind,char*find,int size1)
 {
     int loop = getAll();
@@ -197,7 +201,6 @@ int getSpec(char*find, int kind){
         puts("Pilihan anda tidak tersedia");
     }
 }*/
-
 int viewBook(int num){
     int i = num - 1;
     printf("[%d]\nTitle:%s\nAuthor:%s\nISBN:%s\nStock:%d\nLocation:%s\n", num, loan[i].title, loan[i].author, loan[i].isbn, loan[i].stock, loan[i].loc);
@@ -247,12 +250,13 @@ void updateBook(int next,int stock){
     }
     fclose(ub);
 }
+
 void delBook(int target)
 {
     int loop = getAll(), i;
     system("cls");
     FILE *db;
-    for (i = target; i < loop; i++)
+    for (i = target-1; i < loop; i++)
     {
         loan[i] = loan[i + 1];
     }
@@ -266,7 +270,7 @@ void delBook(int target)
         }
         fprintf(db, "%s;\n%s;\n%s;\n%d\n%s;", loan[j].title,loan[j].author,loan[j].isbn,loan[j].stock,loan[j].loc);
     }
-    fclose(dm);
+    fclose(db);
 }
 //Member System
 void createMem(char*name,char*phone,char*address){
@@ -410,7 +414,7 @@ void delMem(int target){
         mem[i] = mem[i+1];
     }
     i-=1;
-    dm = fopen(fileMem,"w");
+    dm = fopen(fileInv,"w");
     for(int j = 0; j<i;j++){
         if (j > 0)
         {
@@ -420,8 +424,207 @@ void delMem(int target){
     }
     fclose(dm);
 }
-int main()
+//Sistem Pengembalian
+char *getTime(){
+    struct tm *info;
+    time_t rawtime;
+    time(&rawtime);
+    info = localtime(&rawtime);
+    return asctime(info);
+}
+int getallLoan(){
+    int i = 0,loop;
+    FILE *gal;
+    gal = fopen(fileLoan,"r");
+    char ch;
+    if(gal == NULL){
+        printf("File tidak ditemukan!");
+    }
+    long size = getLong(fileLoan);
+    if(size==0){
+        printf("File Kosong");
+        exit(1);
+    }
+    while(ch!= EOF){
+        fscanf(gal,"%200[^;]%*c %200[^;]%*c %200[^;]%*c %200[^;]%*c",row[i].title,row[i].isbn,row[i].name,row[i].loanTime);
+        printf("[%d]\nTitle: %s\nISBN: %s\nLoan by %s\nLoan time %s\n",i+1,row[i].title,row[i].isbn,row[i].name,row[i].loanTime);
+        ch = fgetc(gal);
+        i++;
+        loop = i;
+    }
+    return loop;
+    fclose(gal);
+}
+void delLoan(char*isbn,char*namaDepan){
+    int loop = getallLoan(), i,target;
+    system("cls");
+    FILE *dl;
+    int size = strlen(namaDepan);
+    for (i = 0; i < loop; i++)
+    {
+        if (strcmp(row[i].isbn, isbn) == 0 && strncmp(row[i].name, namaDepan, size) == 0)
+        {
+            target = i;
+        }
+    }
+    for (i = target; i < loop; i++)
+    {
+        row[i] = row[i + 1];
+    }
+    i -= 1;
+    dl = fopen(fileLoan, "w");
+    for (int j = 0; j < i; j++)
+    {
+        if (j > 0)
+        {
+            fprintf(dl, "\n");
+        }
+        fprintf(dl, "%s;\n%s;\n%s;\n%s;", row[j].title, row[j].isbn, row[j].name,row[j].loanTime);
+    }
+    fclose(dl);
+}
+char*getspecLoan(char*isbn){
+    int loop = getAll();
+    system("cls");
+    for(int i = 0; i<loop; i++){
+        if(strcmp(loan[i].isbn,isbn)==0){
+            return loan[i].title;
+        }
+    }
+}
+char*getDate(char*isbn,char*namaDepan){
+    int loop = getallLoan(),i=0;
+    system("cls");
+    int size = strlen(namaDepan);
+    for(int i = 0; i<loop;i++){
+        if(strcmp(row[i].isbn,isbn)==0 && strncmp(row[i].name,namaDepan,size)==0){
+            return row[i].loanTime;
+        }
+    }
+}
+void minusStock(char*isbn){
+    int loop = getAll();
+    system("cls");
+    FILE *ms;
+    ms = fopen(fileInv,"w");
+    char ch;
+    if(ms == NULL){
+        printf("File tidak ditemukan");
+        exit(1);
+    }
+    for(int i = 0; i <loop; i++){
+        if(strcmp(isbn,loan[i].isbn)==0){
+            loan[i].stock -= 1;
+        }
+    }
+    for(int i = 0; i<loop;i++){
+        if(i>0){
+            fprintf(ms,"\n");
+        }
+        fprintf(ms,"%s;\n%s;\n%s;\n%d\n%s; ",loan[i].title,loan[i].author,loan[i].isbn,loan[i].stock,loan[i].loc);
+    }
+    fclose(ms);
+}
+int getallBack()
 {
+    int i = 0, j = 0, loop;
+    FILE *gab;
+    gab = fopen(fileBack, "r");
+    char ch;
+    if (gab == NULL)
+    {
+        printf("File tidak ditemukan!");
+    }
+    long size = getLong(fileBack);
+    if (size == 0)
+    {
+        printf("File Kosong");
+        exit(1);
+    }
+    do{
+        fscanf(gab, "%200[^;]%*c %200[^;]%*c %200[^;]%*c %200[^;]%*c %200[^;]%*c", row[i].title, row[i].isbn, row[i].name, row[i].loanTime, row[i].backTime);
+        printf("[%d]\nTitle: %s\nISBN: %s\nLoan by %s\nLoan time at %s\nBack time at %s ",i+1,row[i].title, row[i].isbn, row[i].name, row[i].loanTime,row[i].backTime);
+        ch = fgetc(gab);
+        i++;
+        loop = i;
+    }while (ch != EOF);
+    return loop;
+    fclose(gab);
+}
+void plusStock(char *isbn)
+{
+    int loop = getAll();
+    system("cls");
+    FILE *ms;
+    ms = fopen(fileInv, "w");
+    char ch;
+    if (ms == NULL)
+    {
+        printf("File tidak ditemukan");
+        exit(1);
+    }
+    for (int i = 0; i < loop; i++)
+    {
+        if (strcmp(isbn, loan[i].isbn) == 0)
+        {
+            loan[i].stock += 1;
+        }
+    }
+    for (int i = 0; i < loop-1; i++)
+    {
+        if (i > 0)
+        {
+            fprintf(ms, "\n");
+        }
+        fprintf(ms, "%s;\n%s;\n%s;\n%d\n%s; ", loan[i].title, loan[i].author, loan[i].isbn, loan[i].stock, loan[i].loc);
+    }
+    fclose(ms);
+}
+int checkStock(char*isbn){
+    int loop = getAll(), i = 0;
+    system("cls");
+    for (int i = 0; i < loop; i++)
+    {
+        if (strcmp(loan[i].isbn, isbn) == 0)
+        {
+            return loan[i].stock;
+        }
+    }
+}
+void createLoan(char*isbn,char*name,char*loanTime){
+    FILE *cl;
+    cl = fopen(fileLoan,"a");
+    int size = getLong(fileLoan);
+    char*title = strdup(getspecLoan(isbn));
+    int stock = checkStock(isbn);
+    if (stock == 0){
+        printf("Stock Kosong");
+        exit(1);
+    }
+    if(size > 0){
+        fprintf(cl,"\n");
+    }
+    fprintf(cl,"%s;\n%s;\n%s;\n%s; ",title,isbn,name,loanTime);
+    minusStock(isbn);
+    fclose(cl);
+}
+void createBack(char*isbn,char*name,char*backTime){
+    FILE *cb;
+    cb = fopen(fileBack, "a");
+    int size = getLong(fileBack);
+    char *title = strdup(getspecLoan(isbn));
+    char *loanTime = strdup(getDate(isbn,name));
+    if (size > 0)
+    {
+        fprintf(cb, "\n");
+    }
+    fprintf(cb, "%s;\n%s;\n%s;\n%s;\n%s; ", title, isbn, name, loanTime, backTime);
+    plusStock(isbn);
+    delLoan(isbn,name);
+    fclose(cb);
+}
+
+int main(){
     char chose[2];
     char ul[2];
     char info[500],info1[500],info2[500],info3[500],info4[500];
@@ -434,187 +637,244 @@ int main()
     scanf("%d", &menu);
     switch (menu)
     {
-    case 1: 
-        do
-        {
-            puts("Data Buku");
-            puts("1.Iventaris");
-            puts("2.Pendataan Buku");
-            puts("3.Pembukuan Pinjam/Kembali");
-            fflush(stdin);
-            gets(chose);
-            if (strcmp("1", chose) == 0){
-                puts("Inventaris Buku");
-                puts("1. Semua informasi");
-                puts("2. Informasi Spesifik");
+        case 1: 
+            do
+            {
+                puts("Data Buku");
+                puts("1.Iventaris");
+                puts("2.Pendataan Buku");
+                puts("3.Pembukuan Pinjam/Kembali");
+                fflush(stdin);
+                gets(chose);
+                if (strcmp("1", chose) == 0){
+                    puts("Inventaris Buku");
+                    puts("1. Semua informasi");
+                    puts("2. Informasi Spesifik");
+                    puts("Anda ingin melihat yang mana? (ketik nomor untuk memilih)");
+                    printf("Pilihan: ");
+                    scanf("%d", &sub);
+                    if (sub == 1){
+                        getAll();
+                    }
+                    else if (sub == 2){
+                        printf("Masukan Informasi:");
+                        fflush(stdin);
+                        gets(info);
+                        printf("Jenis Informasi\n1.Judul\n2.Author\n3.ISBN\n");scanf("%d",&pilih);
+                        getSpec(info,pilih);
+                    }
+                    else{
+                        puts("Pilihan tidak tersedia");
+                    }
+                }
+                else if (strcmp("2", chose) == 0){
+                    puts("Pendataan Buku");
+                    printf("1.Buku Masuk\n2.Hapus Data\n");scanf("%d",&sub);
+                    if(sub == 1){
+                        printf("Masukan Judul Buku: ");
+                        fflush(stdin);
+                        gets(info);
+                        int next = getBook(info);
+                        if(next == 0){
+                            printf("Buku tida terseida");
+                            printf("Masukan Judul: ");
+                            fflush(stdin);
+                            gets(info1);
+                            printf("Masukan Nama Penulis: ");
+                            fflush(stdin);
+                            gets(info2);
+                            printf("Masukan ISBN: ");
+                            fflush(stdin);
+                            gets(info3);
+                            printf("Masukan Stock: ");
+                            scanf("%d",&stock);
+                            printf("Masukan Lokasi: ");
+                            fflush(stdin);
+                            gets(info4);
+                            createBook(info1,info2,info3,stock,info4);
+                            //buat baru
+                        }
+                        if (next != 0){
+                            printf("Buku tersedia");
+                            printf("Update Stock: ");scanf("%d",&stock);
+                            updateBook(next,stock);
+                            //update
+                        }
+                    }
+                    else if(sub == 2){
+                        printf("Masukan Judul Buku: ");
+                        fflush(stdin);
+                        gets(info);
+                        int next = getBook(info);
+                        if (next == 0)
+                        {
+                            puts("Buku tidak tersedia");
+                        }
+                        if (next != 0){
+                            printf("Input nomor buku yang ingin kamu hapus!");
+                            printf("Input");scanf("%d",&pilih);
+                            delBook(pilih);
+                        }
+                    }
+                    else{
+                        printf("Pilihan tidak tersedia");
+                    }
+                }
+                else if (strcmp("3", chose) == 0)
+                {
+                    puts("Data Pinjam/Kembali");
+                    printf("1.Data Peminjaman\n2.Data Pengembalian\n3.Tampilkan Semua\n");
+                    printf("Anda ingin mengakses yang mana?(input nomor akses)\nPilih: ");scanf("%d",&pilih);
+                    if(pilih == 1){
+                        printf("Data Peminjaman\n");
+                        getallLoan();
+                    }
+                    else if (pilih == 2){
+                        printf("Data Pengembalian\n");
+                        getallBack();
+
+                    }
+                    else if(pilih == 3){
+                        printf("Semua Mobilitas Buku");
+                        getallLoan();
+                        getallBack();
+                    }
+                    else{
+                        puts("Pilihan tidak tersedia!");
+                        exit(1);
+                    }
+                }
+                else
+                {
+                    printf("Pilihan tidak tersedia goblok");
+                }
+
+                printf("\nUlang? Ketik 1: ");
+                fflush(stdin);
+                gets(ul);
+            } while (strcmp("1", ul) == 0);
+            break;
+        case 2:
+            do
+            {
+                system("cls");
+                puts("Sistem Member");
+                puts("1. Member baru");
+                puts("2. Edit data");
+                puts("3. Tampil data");
+                puts("4. Delete data");
+                puts("0. exit");
+
                 puts("Anda ingin melihat yang mana? (ketik nomor untuk memilih)");
                 printf("Pilihan: ");
-                scanf("%d", &sub);
-                if (sub == 1){
-                    getAll();
-                }
-                else if (sub == 2){
-                    printf("Masukan Informasi:");
+                scanf("%d", &ch);
+                if (ch == 1)
+                {
+                    system("cls");
+                    printf("Name Depan: ");
                     fflush(stdin);
                     gets(info);
-                    printf("Jenis Informasi\n1.Judul\n2.Author\n3.ISBN\n");scanf("%d",&pilih);
-                    getSpec(info,pilih);
+                    printf("Nama Belakang");
+                    fflush(stdin);
+                    gets(info1);
+                    strcat(info,info1);
+                    printf("Phone Number: ");
+                    fflush(stdin);
+                    gets(info2);
+                    printf("Address: ");
+                    fflush(stdin);
+                    gets(info3);
+                    createMem(info,info2,info3);
+                    system("pause");
                 }
-                else{
-                    puts("Pilihan tidak tersedia");
-                }
-            }
-            else if (strcmp("2", chose) == 0){
-                puts("Pendataan Buku");
-                printf("1.Buku Masuk\n2.Hapus Data\n");scanf("%d",&sub);
-                if(sub == 1){
-                    printf("Masukan Judul Buku: ");
+                else if (ch == 2)
+                {
+                    system("cls");
+                    printf("Masukan Nama Depan");
                     fflush(stdin);
                     gets(info);
-                    int next = getBook(info);
+                    int next = getMember(info);
+                    if(next == 0 ){
+                        puts("Anggota tidak ditemukan");
+                    }
+                    if(next != 0){
+                        printf("Apa yang ingin kamu edit?\n1.Name\n2.Phone Number\n3.Address");
+                        printf("Pilih:");scanf("%d",&pilih);
+                        printf("Masukan Informasi (yang ingin diedit)");
+                        fflush(stdin);
+                        gets(info);
+                        updateMem(next,info,pilih);
+                    }
+                    system("pause");
+                }
+                else if (ch == 3)
+                {
+                    getallMem();
+                    system("pause");
+                }
+                else if (ch == 4)
+                {
+                    system("cls");
+                    printf("Masukan Nama Depan");
+                    fflush(stdin);
+                    gets(info);
+                    int next = getMember(info);
                     if(next == 0){
-                        printf("Buku tida terseida");
-                        printf("Masukan Judul: ");
-                        fflush(stdin);
-                        gets(info1);
-                        printf("Masukan Nama Penulis: ");
-                        fflush(stdin);
-                        gets(info2);
-                        printf("Masukan ISBN: ");
-                        fflush(stdin);
-                        gets(info3);
-                        printf("Masukan Stock: ");
-                        scanf("%d",&stock);
-                        printf("Masukan Lokasi: ");
-                        fflush(stdin);
-                        gets(info4);
-                        createBook(info1,info2,info3,stock,info4);
-                        //buat baru
+                        puts("Anggota tidak ditemukan");
                     }
-                    if (next != 0){
-                        printf("Buku tersedia");
-                        printf("Update Stock: ");scanf("%d",&stock);
-                        updateBook(next,stock);
-                        //update
+                    if (next!=0){
+                        printf("Input nomor anggota yang ingin kamu hapus!");
+                        printf("Input: ");scanf("%d",&pilih);
+                        delMem(pilih);
                     }
-
+                    system("pause");
                 }
-                else if(sub == 2){
-                    printf("Masukan Judul Buku: ");
+                else
+                {
+                    exit(1);
+                }
+
+            } while (ch != 0);
+        case 3:
+            do{
+                puts("Data Pinjam/Kembali");
+                printf("1.Create Peminjaman\n2.Create Pengembalian\n0.Exit");
+                printf("Anda ingin mengakses yang mana?(input nomor akses)\nPilih: ");
+                scanf("%d", &pilih);
+                if (pilih == 1)
+                {
+                    printf("Data Peminjaman\nMasukan Data\n");
+                    printf("ISBN: ");
                     fflush(stdin);
                     gets(info);
-                    int next = getBook(info);
-                    if (next == 0)
-                    {
-                        puts("Buku tidak tersedia");
-                    }
-                    if (next != 0){
-                        target
-                        delBook()
-                    }
+                    printf("Peminjam: ");
+                    fflush(stdin);
+                    gets(info1);
+                    printf("Tanggal Peminjaman");
+                    char *dup = strdup(getTime());
+                    createLoan(info, info1, dup);
+                }
+                else if (pilih == 2)
+                {
+                    printf("Data Pengembalian\nMasukan Data\n");
+                    printf("ISBN: ");
+                    fflush(stdin);
+                    gets(info);
+                    printf("Nama Depan: ");
+                    fflush(stdin);
+                    gets(info1);
+                    printf("Tanggal Pengembalian");
+                    strcpy(info2, getTime());
+                    createBack(info, info1, info2);
+                }
                 else{
                     printf("Pilihan tidak tersedia");
+                    exit(1);
                 }
-            }
-            else if (strcmp("3", chose) == 0)
-            {
-                puts("Data Pinjam/Kembali");
-                //belum ada tapi pakai kode tanggal maybe.
-            }
-            else
-            {
-                printf("Pilihan tidak tersedia goblok");
-            }
-
-            printf("\nUlang? Ketik 1: ");
-            fflush(stdin);
-            gets(ul);
-        } while (strcmp("1", ul) == 0);
-        break;
-    case 2:
-        do
-        {
-            system("cls");
-            puts("Sistem Member");
-            puts("1. Member baru");
-            puts("2. Edit data");
-            puts("3. Tampil data");
-            puts("4. Delete data");
-            puts("0. exit");
-
-            puts("Anda ingin melihat yang mana? (ketik nomor untuk memilih)");
-            printf("Pilihan: ");
-            scanf("%d", &ch);
-            if (ch == 1)
-            {
-                system("cls");
-                printf("Name Depan: ");
-                fflush(stdin);
-                gets(info);
-                printf("Nama Belakang");
-                fflush(stdin);
-                gets(info1);
-                strcat(info,info1);
-                printf("Phone Number: ");
-                fflush(stdin);
-                gets(info2);
-                printf("Address: ");
-                fflush(stdin);
-                gets(info3);
-                createMem(info,info2,info3);
-                system("pause");
-            }
-            else if (ch == 2)
-            {
-                system("cls");
-                printf("Masukan Nama Depan");
-                fflush(stdin);
-                gets(info);
-                int next = getMember(info);
-                if(next == 0 ){
-                    puts("Anggota tidak ditemukan");
-                }
-                if(next != 0){
-                    printf("Apa yang ingin kamu edit?\n1.Name\n2.Phone Number\n3.Address");
-                    printf("Pilih:");scanf("%d",&pilih);
-                    printf("Masukan Informasi (yang ingin diedit)");
-                    fflush(stdin);
-                    gets(info);
-                    updateMem(next,info,pilih);
-                }
-                system("pause");
-            }
-            else if (ch == 3)
-            {
-                getallMem();
-                system("pause");
-            }
-            else if (ch == 4)
-            {
-                system("cls");
-                printf("Masukan Nama Depan");
-                fflush(stdin);
-                gets(info);
-                int next = getMember(info);
-                if(next == 0){
-                    puts("Anggota tidak ditemukan");
-                }
-                if (next!=0){
-                    printf("Input nomor anggota yang ingin kamu hapus!");
-                    printf("Input: ");scanf("%d",&pilih);
-                    delMem(pilih);
-                }
-                system("pause");
-            }
-            else
-            {
-                exit(1);
-            }
-
-        } while (ch != 0);
-    default:
-        printf("Menu tidak tersedia tolong lah ya...FUCEK");
+            }while (pilih != 0);
+            break;
+        default:
+            printf("Menu tidak tersedia tolong lah ya...FUCEK");
     }
     return 0;
 }
-
