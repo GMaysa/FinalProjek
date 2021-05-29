@@ -1,12 +1,4 @@
-Persona; 100; Asu; Sun May 23 12:05:06 2021; Persona; 100; Jumat; Sun May 23 12:30:46 2021; Persona; 100; Gilang; Sun May 23 12:31:21 2021
-; Perpus; 122; Jumainah; Sun May 23 12:47:40 2021
-; Pemrograman Dasar C; 78; Juju; Sun May 23 12:49:58 2021
-; Pemrograman Dasar C; 78; Huma; Sun May 23 12:50:28 2021
-; Persona; 100; Sisop; Thu May 27 21:38:13 2021
-; Persona; 100; Dipung; Fri May 28 13:46:39 2021
-; Persona; 100; AJG; Fri May 28 13:46:39 2021
-; Persona; 100; Dwitya; Fri May 28 14:04:30 2021
-; Persona; 100; Agung; Fri May 28 14:12:09 2021
-; Persona; 100; Dewa; Fri May 28 14:14:06 2021
-; Persona; 100; Putu; Fri May 28 14:20:52 2021
-; 
+Bestie;
+1029384756;
+Wangsa;
+Sat May 29 15:50:10 2021;
