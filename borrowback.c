@@ -47,7 +47,7 @@ char* borrow(char *comp)
     }
     while (ch != EOF)
     {
-        fscanf(br, "%200[^;]%*c %200[^;]%*c %200[^;]%*c %200[^;]%*c", row[i].title, row[i].code, row[i].id_borrow, row[i].date);
+        fscanf(br, " %200[^;]%*c %200[^;]%*c %200[^;]%*c %200[^;]%*c", row[i].title, row[i].code, row[i].id_borrow, row[i].date);
         ch = getc(br);
         i++;
     }
@@ -70,8 +70,10 @@ char* borrow(char *comp)
     br2 = fopen("DB/dbLoan.txt", "w");
     for (int j = 0; j <= temp; j++)
     {
-        fprintf(br2, "%s; %s; %s; %s;", row[j].title, row[j].code, row[j].id_borrow, row[j].date);
-        printf("Title: %s\nCode: %s\nNama: %s\nTanggal Pinjam: %s\n", row[j].title, row[j].code, row[j].id_borrow, row[j].date);
+        if(strcmp(row[j].title,"") != 0){
+            fprintf(br2, "%s; %s; %s; %s; ", row[j].title, row[j].code, row[j].id_borrow, row[j].date);
+            printf("Title: %s\nCode: %s\nNama: %s\nTanggal Pinjam: %s\n", row[j].title, row[j].code, row[j].id_borrow, row[j].date);
+        }
     }
     fclose(br2);
     fclose(br);
@@ -230,10 +232,10 @@ void dataBack(char*user,char*title,char*code,char*date){
 int main(int argc, char* argv)
 {
     char s[50];
- //   borrow(s);
-   // printf("%s",s);
-    //minusstck(s);
-    getBack();
+    borrow(s);
+    printf("%s",s);
+    minusstck(s);
+    // getBack();
 
 
     return 0;
