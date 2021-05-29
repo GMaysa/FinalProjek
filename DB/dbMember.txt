@@ -1,0 +1,15 @@
+MasyaPutra;
+123456789010;
+Jl.Anu1; 
+Dirga;
+123456789011;
+Jl.Anu2; 
+Bianca;
+123456789013;
+Jl.Anu3; 
+Siska;
+123456789014;
+Jl.Anu4; 
+Agung;
+123456789015;
+Jl.Anu5; 

@@ -67,7 +67,7 @@ long getLong(char*fileName)
 }
 int getAll()
 {
-    int i = 0, j = 0, loop;
+    int i = 0, loop;
     FILE *rd;
     rd = fopen(fileInv, "r");
     char ch;
@@ -146,61 +146,6 @@ int getSpec(char*find, int kind){
     }
 
 }
-/*char *getMore(char *more, int kind,char*find,int size1)
-{
-    int loop = getAll();
-    int size2 = strlen(more);
-    int err;
-    if (kind == 1)
-    {
-        for (int i = 0; i < loop; i++)
-        {
-            if (strncmp(loan[i].title, find, size1)==0 && strncmp(loan))
-            {
-                printf("[%d]\nTitle:%s\nAuthor:%s\nISBN:%s\nStock:%d\nLocation:%s\n", i + 1, loan[i].title, loan[i].author, loan[i].isbn, loan[i].stock, loan[i].loc);
-                err = 0;
-            }
-            if (err != 0)
-            {
-                puts("Buku tidak tersedia atau periksa kembali tulisan anda.");
-            }
-        }
-    }
-    else if (kind == 2)
-    {
-        for (int i = 0; i < loop; i++)
-        {
-            if (strncmp(loan[i].author, find, size))
-            {
-                printf("[%d]\nTitle:%s\nAuthor:%s\nISBN:%s\nStock:%d\nLocation:%s\n", i + 1, loan[i].title, loan[i].author, loan[i].isbn, loan[i].stock, loan[i].loc);
-                err = 0;
-            }
-            if (err != 0)
-            {
-                puts("Buku tidak tersedia atau periksa kembali tulisan anda.");
-            }
-        }
-    }
-    else if (kind == 3)
-    {
-        for (int i = 0; i < loop; i++)
-        {
-            if (strncmp(loan[i].isbn, find, size))
-            {
-                printf("[%d]\nTitle:%s\nAuthor:%s\nISBN:%s\nStock:%d\nLocation:%s\n", i + 1, loan[i].title, loan[i].author, loan[i].isbn, loan[i].stock, loan[i].loc);
-                err = 0;
-            }
-            if (err != 0)
-            {
-                puts("Buku tidak tersedia atau periksa kembali tulisan anda.");
-            }
-        }
-    }
-    else
-    {
-        puts("Pilihan anda tidak tersedia");
-    }
-}*/
 int viewBook(int num){
     int i = num - 1;
     printf("[%d]\nTitle:%s\nAuthor:%s\nISBN:%s\nStock:%d\nLocation:%s\n", num, loan[i].title, loan[i].author, loan[i].isbn, loan[i].stock, loan[i].loc);
@@ -290,9 +235,9 @@ int getallMem(){
     gm = fopen(fileMem,"r");
     if(gm == NULL){
         printf("File tidak ditemukan");
-        exit(EXIT_FAILURE);
+        exit(1);
     }
-    while(ch!=EOF){
+    while(ch != EOF){
         fscanf(gm," %200[^;]%*c %200[^;]%*c %200[^;]%*c",mem[i].nama,mem[i].noTelp,mem[i].Alamat);
         printf("[%d]\nName: %s\nPhone Number: %s\nAddress: %s\n",i+1,mem[i].nama,mem[i].noTelp,mem[i].Alamat);
         ch = fgetc(gm);
@@ -308,12 +253,13 @@ void viewMem(int num){
 }
 int getspecMem(char*info,int kind){
     int loop = getallMem(),err;
+    system("cls");
     int size = strlen(info);
     if(kind == 1){
         for(int i = 0;i<loop;i++){
             if(strncmp(mem[i].nama,info,size)==0){
                 printf("[%d]\nName: %s\nPhone Number: %s\nAddress: %s\n",i+1,mem[i].nama,mem[i].noTelp,mem[i].Alamat);
-                err = 0;
+                return 0;
             }
         }
         if(err != 0){
@@ -323,25 +269,26 @@ int getspecMem(char*info,int kind){
     }
     else{
         printf("Pilihan tidak tersedia");
+        return -1;
     }
 }
 int getMember(char*name){
     int loop = getallMem(), num;
-    system("cls");
     int err = getspecMem(name, 1);
     if (err == 1)
     {
-        printf("Buku tidak tersedia");
+        printf("Nama tidak tergabung dalam anggota");
         return 0;
     }
     if (err != 1)
     {
-        printf("Pilih Member");
+        printf("\nPilih Member; ");
         scanf("%d", &num);
+        system("pause");
+        system("cls");
         viewMem(num);
         return num;
     }
-    system("cls");
 }
 void updateMem(int next,char*info,int kind){
     int loop = getallMem();
@@ -360,10 +307,10 @@ void updateMem(int next,char*info,int kind){
                 if(i>0){
                     fprintf(um,"\n");
                 }
-                fprintf(um,"%s;\n%s;\n%s;",info,mem[i].noTelp,mem[i].Alamat);
+                fprintf(um,"%s;\n%s;\n%s; ",info,mem[i].noTelp,mem[i].Alamat);
             }
             else{
-                fprintf(um, "%s;\n%s;\n%s;",mem[i].nama,mem[i].noTelp,mem[i].Alamat);
+                fprintf(um, "%s;\n%s;\n%s; ",mem[i].nama,mem[i].noTelp,mem[i].Alamat);
             }
         }
     }
@@ -376,11 +323,11 @@ void updateMem(int next,char*info,int kind){
                 {
                     fprintf(um, "\n");
                 }
-                fprintf(um, "%s;\n%s;\n%s;", mem[i].nama, info, mem[i].Alamat);
+                fprintf(um, "%s;\n%s;\n%s; ", mem[i].nama, info, mem[i].Alamat);
             }
             else if (i != next -1)
             {
-                fprintf(um, "%s;\n%s;\n%s;", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
+                fprintf(um, "%s;\n%s;\n%s; ", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
             }
         }
     }
@@ -393,11 +340,11 @@ void updateMem(int next,char*info,int kind){
                 {
                     fprintf(um, "\n");
                 }
-                fprintf(um, "%s;\n%s;\n%s;", mem[i].nama, mem[i].noTelp, info);
+                fprintf(um, "%s;\n%s;\n%s; ", mem[i].nama, mem[i].noTelp, info);
             }
             if( i!= next -1)
             {
-                fprintf(um, "%s;\n%s;\n%s;", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
+                fprintf(um, "%s;\n%s;\n%s; ", mem[i].nama, mem[i].noTelp, mem[i].Alamat);
             }
         }
     }
@@ -407,20 +354,19 @@ void updateMem(int next,char*info,int kind){
     fclose(um);
 }
 void delMem(int target){
-    int loop = getallMem(),i;
-    system("cls");
+    int loop = getallMem(),i=0;
     FILE *dm;
-    for(i = target; i<loop;i++){
+    for(i = target-1; i<loop;i++){
         mem[i] = mem[i+1];
     }
-    i-=1;
-    dm = fopen(fileInv,"w");
-    for(int j = 0; j<i;j++){
+    i -= 1;
+    dm = fopen(fileMem,"w");
+    for(int j = 0; j<i-1;j++){
         if (j > 0)
         {
             fprintf(dm, "\n");
         }
-        fprintf(dm,"%s;\n%s;\n%s;",mem[j].nama,mem[j].noTelp,mem[j].Alamat);
+        fprintf(dm,"%s;\n%s;\n%s; ",mem[j].nama,mem[j].noTelp,mem[j].Alamat);
     }
     fclose(dm);
 }
@@ -430,7 +376,12 @@ char *getTime(){
     time_t rawtime;
     time(&rawtime);
     info = localtime(&rawtime);
-    return asctime(info);
+    char*time = asctime(info);
+    int len = strlen(time);
+    if (time[len-1]=='\n'){
+        time[len-1]=0;
+    }
+    return time;
 }
 int getallLoan(){
     int i = 0,loop;
@@ -543,7 +494,7 @@ int getallBack()
     }
     do{
         fscanf(gab, "%200[^;]%*c %200[^;]%*c %200[^;]%*c %200[^;]%*c %200[^;]%*c", row[i].title, row[i].isbn, row[i].name, row[i].loanTime, row[i].backTime);
-        printf("[%d]\nTitle: %s\nISBN: %s\nLoan by %s\nLoan time at %s\nBack time at %s ",i+1,row[i].title, row[i].isbn, row[i].name, row[i].loanTime,row[i].backTime);
+        printf("[%d]\nTitle: %s\nISBN: %s\nLoan by %s\nLoan time at %s\nBack time at %s\n",i+1,row[i].title, row[i].isbn, row[i].name, row[i].loanTime,row[i].backTime);
         ch = fgetc(gab);
         i++;
         loop = i;
@@ -614,6 +565,10 @@ void createBack(char*isbn,char*name,char*backTime){
     int size = getLong(fileBack);
     char *title = strdup(getspecLoan(isbn));
     char *loanTime = strdup(getDate(isbn,name));
+    int len = strlen(loanTime);
+    if(loanTime[len-1]=='\n'){
+        loanTime[len-1]=0;
+    }
     if (size > 0)
     {
         fprintf(cb, "\n");
@@ -851,8 +806,8 @@ int main(){
                     fflush(stdin);
                     gets(info1);
                     printf("Tanggal Peminjaman");
-                    char *dup = strdup(getTime());
-                    createLoan(info, info1, dup);
+                    strcpy(info2,getTime());
+                    createLoan(info, info1, info2);
                 }
                 else if (pilih == 2)
                 {
