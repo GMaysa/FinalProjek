@@ -1,4 +1,4 @@
-# Library Simulator
+# Library Simulator KELOMPOK 5
 
 ## Model
     Simulasi Perpustakaan, dimana terdapat beberapa fungsi yang menangani peminjaman, system keanggotaan, dan inventaris buku.
