@@ -100,7 +100,6 @@ int getSpec(char *find, int kind)
     if (kind == 1)
     {
         system("cls");
-        system("pause");
         for (int i = 0; i < loop; i++)
         {
             if (strncmp(loan[i].title, find, size) == 0)
@@ -114,11 +113,11 @@ int getSpec(char *find, int kind)
             puts("Buku tidak tersedia atau periksa kembali tulisan anda.");
             return 1;
         }
+        system("pause");
     }
     else if (kind == 2)
     {
         system("cls");
-        system("pause");
         for (int i = 0; i < loop; i++)
         {
             if (strncmp(loan[i].author, find, size) == 0)
@@ -132,11 +131,11 @@ int getSpec(char *find, int kind)
             puts("Buku tidak tersedia atau periksa kembali tulisan anda.");
             return 1;
         }
+        system("pause");
     }
     else if (kind == 3)
     {
         system("cls");
-        system("pause");
         for (int i = 0; i < loop; i++)
         {
             if (strncmp(loan[i].isbn, find, size) == 0)
@@ -150,6 +149,7 @@ int getSpec(char *find, int kind)
             puts("Buku tidak tersedia atau periksa kembali tulisan anda.");
             return 1;
         }
+        system("pause");
     }
     else
     {
@@ -165,8 +165,8 @@ int viewBook(int num)
 int getBook(char *title)
 {
     int loop = getAll(), num;
-    system("cls");
     int err = getSpec(title, 1);
+    system("cls");
     if (err == 1)
     {
         printf("Buku tidak tersedia");
@@ -174,12 +174,11 @@ int getBook(char *title)
     }
     if (err != 1)
     {
-        printf("Pilih Buku");
+        printf("Pilih Buku: ");
         scanf("%d", &num);
         viewBook(num);
         return num;
     }
-    system("cls");
 }
 void createBook(char *title, char *author, char *isbn, int stock, char *loc)
 {
@@ -222,7 +221,7 @@ void delBook(int target)
     int loop = getAll(), i;
     system("cls");
     FILE *db;
-    for (i = target - 1; i < loop; i++)
+    for (i = target-1; i < loop; i++)
     {
         loan[i] = loan[i + 1];
     }
@@ -734,7 +733,8 @@ int main()
                     int next = getBook(info);
                     if (next == 0)
                     {
-                        printf("Buku tidak terseida\n");
+                        system("cls");
+                        printf("Buku tidak tersedia\n");
                         printf("Masukan Judul: ");
                         fflush(stdin);
                         gets(info1);
@@ -818,7 +818,7 @@ int main()
                     getallLoan();
                     getallBack();
                 }
-                else if (pilih == 3){
+                else if (pilih == 0){
                     goto dataBuku;
                 }
                 else
@@ -861,7 +861,7 @@ int main()
                 printf("Name Depan: ");
                 fflush(stdin);
                 gets(info);
-                printf("Nama Belakang");
+                printf("Nama Belakang: ");
                 fflush(stdin);
                 gets(info1);
                 strcat(info, info1);
@@ -915,7 +915,7 @@ int main()
                 }
                 if (next != 0)
                 {
-                    printf("Yakin ingin mengahapus?\nInput nomor anggota yang ingin kamu hapus!\n");
+                    printf("\nYakin ingin mengahapus?\nInput nomor anggota yang ingin kamu hapus!\n");
                     printf("Input: ");
                     scanf("%d", &pilih);
                     delMem(pilih);
@@ -927,7 +927,7 @@ int main()
             }
             else
             {
-                printf("Pilihan tidak tersedia");
+                printf("\nPilihan tidak tersedia");
                 goto memberSystem;
             }
 
@@ -936,7 +936,7 @@ int main()
         do
         {
             system("cls");
-            puts("Data Pinjam/Kembali");
+            printf("Data Pinjam/Kembali\n");
             printf("1. Create Peminjaman\n2. Create Pengembalian\n0. Kembali\n");
             printf("PILIH: ");
             scanf("%d", &pilih);
