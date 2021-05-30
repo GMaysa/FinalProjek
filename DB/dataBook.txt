@@ -1,15 +1,45 @@
 Masih Belajar;
 Iman Usman;
-1234567890;
-21
-Self Improvement:SI.2; 
+9786020628929;
+20
+Self Improvement:SI.2;
 Bumi;
 Tere Liye;
-0987654321;
+9786020332956;
 9
-Novel:N.3; 
-Are you okay?;
-Clarin Hayes;
-9786237211662;
-17
-Self Improvement:SI.2; 
+Novel:N.3;
+Bulan;
+Tere Liye;
+9786020301129;
+15
+Novel:N.3;
+Matahari;
+Tere Liye;
+9786020332116;
+11
+Novel:N.3;
+Bintang;
+Tere Liye;
+9786020351179;
+12
+Novel:N.3;
+Geez & Ann #1:Free Chapter;
+Rintik Sedu;
+9789797809096;
+14
+Novel:N.2;
+Geez & Ann #2:Free Chapter;
+Rintik Sedu;
+9789797809102;
+16
+Novel:N.2;
+Geez & Ann #3:Free Chapter;
+Rintik Sedu;
+9789797809584;
+5
+Novel:N.2;
+Konsep Dasar Pemrograman Bahasa C;
+Jogiyanto Hartono;
+9797631559;
+3
+Teknologi Informasi:TI.1;
